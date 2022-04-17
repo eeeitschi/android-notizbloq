@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Notizbloq_v2</string>
+    <string name="delete">delete</string>
+    <string name="title">title</string>
+    <string name="text">text</string>
+    <string name="save">save</string>
+</resources>

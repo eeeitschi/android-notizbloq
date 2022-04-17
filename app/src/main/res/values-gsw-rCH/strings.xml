@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Notizbloq_v2</string>
+    <string name="delete">löschen</string>
+    <string name="title">Titel</string>
+    <string name="text">Text</string>
+    <string name="save">Speichern</string>
+</resources>
