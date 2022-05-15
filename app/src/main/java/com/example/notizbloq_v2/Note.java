@@ -11,7 +11,7 @@ import java.util.TimeZone;
 public class Note implements Serializable {
     private long createdDtTm, modifiedDtTm;
     private String noteTitle, noteText;
-    private int imageId = R.drawable.ic_launcher_background; // TODO: Change
+    private Integer imageId = null;
 
     public Note(long createdDtTm, long modifiedDtTm, String title, String text) {
         this.createdDtTm = createdDtTm;
@@ -42,7 +42,7 @@ public class Note implements Serializable {
         return this.noteTitle;
     }
 
-    public int getImageId() {
+    public Integer getImageId() {
         return imageId;
     }
 
