@@ -4,4 +4,6 @@
     <string name="title">title</string>
     <string name="text">text</string>
     <string name="save">save</string>
+    <string name="write_your_note_here">Write your Note here...</string>
+    <string name="new_note_title">New Note Title</string>
 </resources>
