@@ -30,10 +30,37 @@
         android:gravity="start|top"
         android:hint="@string/write_your_note_here"
         android:inputType="textMultiLine"
-        app:layout_constraintBottom_toTopOf="@+id/btnSaveNote"
+        app:layout_constraintBottom_toTopOf="@+id/linlayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/noteTitle" />
+
+    <LinearLayout
+        android:id="@+id/linlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnSaveNote"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <Button
+            android:id="@+id/btnTakePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/take_photo"
+            app:layout_constraintBottom_toTopOf="@+id/btnSaveNote"
+            app:layout_constraintHorizontal_bias="1.0"
+             />
+
+        <ImageView
+            android:id="@+id/imageViewPictureThumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/btnSaveNote"
