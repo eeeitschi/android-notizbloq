@@ -1,27 +1,28 @@
 package com.example.notizbloq_v2;
 
-import android.content.ActivityNotFoundException;
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class NoteViewer extends AppCompatActivity {
 
     EditText noteTitle, noteText; // Views in diesem Layout
     String noteFileName;
     Note loadedNote; // mitgegebene Note
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final String[] CAMERA_PERMISSION = new String[]{Manifest.permission.CAMERA};
+    private static final int CAMERA_REQUEST_CODE = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,31 +50,35 @@ public class NoteViewer extends AppCompatActivity {
         // Add onclicklistener for the take photo button
         Button button = (Button) findViewById(R.id.btnTakePhoto);
         button.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-                // start take picture intent.
-                dispatchTakePictureIntent();
+                if (hasCameraPermission()) {
+                    enableCamera();
+                } else {
+                    requestPermission();
+                }
             }
         });
     }
 
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        try {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        } catch (ActivityNotFoundException e) {
-            // display error state to the user
-        }
+    private boolean hasCameraPermission() {
+        return ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            ImageView imageView = findViewById(R.id.imageViewPictureThumbnail);
-            imageView.setImageBitmap(imageBitmap);
-        }
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(
+                this,
+                CAMERA_PERMISSION,
+                CAMERA_REQUEST_CODE
+        );
+    }
+
+    private void enableCamera() {
+        Intent intent = new Intent(this, CameraActivity.class);
+        startActivity(intent);
     }
 
     @Override
