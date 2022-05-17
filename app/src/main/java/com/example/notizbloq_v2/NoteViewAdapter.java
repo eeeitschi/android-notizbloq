@@ -37,10 +37,10 @@ public class NoteViewAdapter extends ArrayAdapter<Note> {
         assert currentNotePosition != null;
 
         // then according to the position of the view assign the desired image for the same
-        if (currentNotePosition.getImageId() != null) {
+        if (currentNotePosition.getThumbnailImageId() != null) {
             ImageView noteImage = currentItemView.findViewById(R.id.item_noteImage);
             Log.d("LOG. NoteViewAdapter", "changeImageId");
-            noteImage.setImageResource(currentNotePosition.getImageId());
+            noteImage.setImageResource(currentNotePosition.getThumbnailImageId());
         }
 
         // then according to the position of the view assign the note title for the same
