@@ -1,6 +1,7 @@
 package com.example.notizbloq_v2;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,10 +38,10 @@ public class NoteViewAdapter extends ArrayAdapter<Note> {
         assert currentNotePosition != null;
 
         // then according to the position of the view assign the desired image for the same
-        if (currentNotePosition.getThumbnailImageId() != null) {
+        if (currentNotePosition.getImageUrl() != null) {
             ImageView noteImage = currentItemView.findViewById(R.id.item_noteImage);
-            Log.d("LOG. NoteViewAdapter", "changeImageId");
-            noteImage.setImageResource(currentNotePosition.getThumbnailImageId());
+            //noteImage.setImageResource(currentNotePosition.getThumbnailImageId());
+            noteImage.setImageBitmap(BitmapFactory.decodeFile(currentNotePosition.getImageUrl()));
         }
 
         // then according to the position of the view assign the note title for the same
