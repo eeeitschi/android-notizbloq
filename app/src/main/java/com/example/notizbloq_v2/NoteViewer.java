@@ -52,20 +52,31 @@ public class NoteViewer extends AppCompatActivity {
             if (loadedNote != null) {
                 noteTitle.setText(loadedNote.getNoteTitle());
                 noteText.setText(loadedNote.getNoteText());
+                currentPhotoPath = loadedNote.getImageUrl();
 
                 // if the note contains a picture, update the layout and show the image.
                 if (loadedNote.getImageUrl() != null) {
-                    showImageOnScreen(loadedNote.getImageUrl());
+                    updateImageView(loadedNote.getImageUrl());
                 }
             }
         }
 
         // Add onclicklistener for the take photo button.
-        Button button = (Button) findViewById(R.id.btnTakePhoto);
-        button.setOnClickListener(new View.OnClickListener() {
+        Button takePhotoBtn = (Button) findViewById(R.id.btnTakePhoto);
+        takePhotoBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Start take picture intent.
                 dispatchTakePictureIntent();
+            }
+        });
+
+        // Add onclicklistener for the deletion of a photo.
+        Button deletePhotoBtn = (Button) findViewById(R.id.btnDeleteImage);
+        deletePhotoBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Reset the Url and update the view.
+                currentPhotoPath = null;
+                updateImageView(null);
             }
         });
     }
@@ -99,8 +110,7 @@ public class NoteViewer extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             try {
-                if (loadedNote != null) loadedNote.setImageUrl(currentPhotoPath);
-                showImageOnScreen(currentPhotoPath);
+                updateImageView(currentPhotoPath);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -108,18 +118,28 @@ public class NoteViewer extends AppCompatActivity {
     }
 
     /**
-     * [showImageOnScreen]
-     * Update the ImageView on Screen with the picture linked in the note.
+     * [updateImageView]
+     * Update the ImageView on Screen with the picture linked in the note and enables the button
+     * to delete the picture again.
+     *
      * @param imageUrl: String, the Url to the image includes  filename and ending.
      */
-    private void showImageOnScreen(String imageUrl) {
+    private void updateImageView(String imageUrl) {
         ImageView imagePreview = (ImageView) findViewById(R.id.imageViewPictureThumbnail);
-        try {
-            imagePreview.setImageBitmap(BitmapFactory.decodeFile(imageUrl));
-        } catch (RuntimeException ex) {
-            ex.printStackTrace();
+        Button deleteImageButton = (Button) findViewById(R.id.btnDeleteImage);
+        if (imageUrl != null) {
+            try {
+                imagePreview.setImageBitmap(BitmapFactory.decodeFile(imageUrl));
+                deleteImageButton.setEnabled(true);
+            } catch (RuntimeException ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            imagePreview.setImageResource(0);
+            deleteImageButton.setEnabled(false);
         }
     }
+
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -148,7 +168,7 @@ public class NoteViewer extends AppCompatActivity {
         if (loadedNote == null) { // Wenn eine neue Notiz gespeichert wird
             note = new Note(System.currentTimeMillis(), System.currentTimeMillis(), noteTitle.getText().toString(), noteText.getText().toString(), currentPhotoPath);
         } else { // Wenn eine vorhandene Notiz gespeichert wird, wird die Notiz mit gleichen Namen abgespeichert aber neuen Attributen
-            note = new Note(loadedNote.getCreatedDtTm(), System.currentTimeMillis(), noteTitle.getText().toString(), noteText.getText().toString(), loadedNote.getImageUrl());
+            note = new Note(loadedNote.getCreatedDtTm(), System.currentTimeMillis(), noteTitle.getText().toString(), noteText.getText().toString(), currentPhotoPath);
         }
         if (Utilities.saveNote(this, note)) {
             Toast.makeText(this, "Note saved", Toast.LENGTH_SHORT).show();

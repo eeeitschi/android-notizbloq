@@ -38,51 +38,61 @@
     <LinearLayout
         android:id="@+id/linlayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         app:layout_constraintBottom_toTopOf="@+id/btnSaveNote"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
         <Button
             android:id="@+id/btnTakePhoto"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:text="@string/take_photo"
             app:layout_constraintBottom_toTopOf="@+id/btnSaveNote"
-            app:layout_constraintHorizontal_bias="1.0"
-             />
+            app:layout_constraintHorizontal_bias="1.0" />
 
+        <Button
+            android:id="@+id/btnDeleteImage"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="@string/remove_photo"
+            android:enabled="false"/>
+        </LinearLayout>
         <ImageView
             android:id="@+id/imageViewPictureThumbnail"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:paddingLeft="78dp"
+            android:layout_marginRight="8dp"
+            android:layout_gravity="right"/>
     </LinearLayout>
 
 
     <Button
         android:id="@+id/btnSaveNote"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="122dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginBottom="8dp"
         android:onClick="buttonSave"
         android:text="@string/save"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnDelete"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnDelete"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:onClick="deleteNote"
         android:text="@string/delete"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnSaveNote" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
