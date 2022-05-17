@@ -60,12 +60,11 @@ public class NoteViewer extends AppCompatActivity {
             }
         }
 
-
         // Add onclicklistener for the take photo button.
         Button button = (Button) findViewById(R.id.btnTakePhoto);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // start take picture intent.
+                // Start take picture intent.
                 dispatchTakePictureIntent();
             }
         });
@@ -108,6 +107,11 @@ public class NoteViewer extends AppCompatActivity {
         }
     }
 
+    /**
+     * [showImageOnScreen]
+     * Update the ImageView on Screen with the picture linked in the note.
+     * @param imageUrl: String, the Url to the image includes  filename and ending.
+     */
     private void showImageOnScreen(String imageUrl) {
         ImageView imagePreview = (ImageView) findViewById(R.id.imageViewPictureThumbnail);
         try {
@@ -151,7 +155,6 @@ public class NoteViewer extends AppCompatActivity {
             //HomeScreen.noteViewAdapter.notifyDataSetChanged();
             finish(); // beendet die Activity und kehrt zum HomeScreen zurück
         }
-
     }
 
     public void deleteNote(View view) {
