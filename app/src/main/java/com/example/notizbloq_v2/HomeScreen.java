@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 public class HomeScreen extends AppCompatActivity {
 
-    static ArrayList<Note> notes = new ArrayList<>();
     static NoteViewAdapter noteViewAdapter = null;
     ListView noteListView;
 

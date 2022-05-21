@@ -38,7 +38,7 @@
     <LinearLayout
         android:id="@+id/linlayout"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         app:layout_constraintBottom_toTopOf="@+id/btnSaveNote"
@@ -49,28 +49,50 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <Button
-            android:id="@+id/btnTakePhoto"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="@string/take_photo"
-            app:layout_constraintBottom_toTopOf="@+id/btnSaveNote"
-            app:layout_constraintHorizontal_bias="1.0" />
 
-        <Button
-            android:id="@+id/btnDeleteImage"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="@string/remove_photo"
-            android:enabled="false"/>
+            <Button
+                android:id="@+id/btnTakePhoto"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="@string/take_photo"
+                app:layout_constraintBottom_toTopOf="@+id/btnSaveNote"
+                app:layout_constraintHorizontal_bias="1.0" />
+
+            <Button
+                android:id="@+id/btnDeleteImage"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:text="@string/remove_photo" />
+
+            <Button
+                android:id="@+id/btnAudioRecording"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Start Recording"
+                android:textAllCaps="true"
+                app:icon="@drawable/ic_audio"
+                app:iconPadding="4dp" />
+
+            <Button
+                android:id="@+id/btnPlayRecording"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:text="Play"
+                app:icon="@android:drawable/ic_media_play"
+                app:iconPadding="4dp" />
+
         </LinearLayout>
+
         <ImageView
             android:id="@+id/imageViewPictureThumbnail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="78dp"
+            android:layout_gravity="right"
             android:layout_marginRight="8dp"
-            android:layout_gravity="right"/>
+            android:paddingLeft="78dp" />
+
     </LinearLayout>
 
 

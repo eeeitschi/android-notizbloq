@@ -1,7 +1,9 @@
 package com.example.notizbloq_v2;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.TypefaceCompat;
 
 import java.util.ArrayList;
 
@@ -43,6 +47,14 @@ public class NoteViewAdapter extends ArrayAdapter<Note> {
             //noteImage.setImageResource(currentNotePosition.getThumbnailImageId());
             noteImage.setImageBitmap(BitmapFactory.decodeFile(currentNotePosition.getImageUrl()));
         }
+
+        // Add Microphone Icon to NoteViewAdapter if a Recording is present
+        if (currentNotePosition.getAudioUrl() != null) {
+            ImageView audioIcon = currentItemView.findViewById(R.id.item_audio);
+            Drawable audio = audioIcon.getResources().getDrawable(R.drawable.ic_audio);
+            audioIcon.setImageDrawable(audio);
+        }
+
 
         // then according to the position of the view assign the note title for the same
         TextView noteTitle = currentItemView.findViewById(R.id.item_noteTitle);

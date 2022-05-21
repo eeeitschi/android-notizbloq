@@ -27,6 +27,7 @@ public class Utilities {
 
         try {
             fos = context.openFileOutput(fileName, context.MODE_PRIVATE);
+            Log.i("Saving", "Files Directory: " + context.getFilesDir().getAbsolutePath());
             oos = new ObjectOutputStream(fos);
             oos.writeObject(note);
 
