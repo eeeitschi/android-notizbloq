@@ -1,7 +1,7 @@
 # NotizBloq Applikation
-FFHS - Fernfachhochschule Schweiz
-Modul: ESA FS 2022
-Dozent: Karl Seeliger
+FFHS - Fernfachhochschule Schweiz 
+Modul: ESA FS 2022 
+Dozent: Karl Seeliger 
 Projektteam: Amanda Ramirez Ramos, Achim Grether
 
 
@@ -9,18 +9,17 @@ Projektteam: Amanda Ramirez Ramos, Achim Grether
 - [ ] Tags parsen
 - [ ] Layout mit Suchfeld ergänzen
 - [ ] Filter nach Tags umsetzen
+- [ ] Share Funktion für Notizen
 - [ ] Settings Page umsetzen (optional)
 - [ ] Info Page zur Notiz umsetzen (optional)
 - [ ] Menu beim Bearbeiten einer Notiz (optional)
 - [ ] Fragment zur Notizbearbeitung (optional)
-- [ ] Share Funktion für Notizen
+- [ ] UI-Update: Anzeige der Bild- und Audioaufnahme umgestalten (optional)
+- [ ] UI-Update: Besseres Icon für die App erstellen (optional)
 
 
 ## DOING
-- [ ] Audiomodul einbinden
-- [ ] Audio aufnehmen / löschen
-- [ ] Audio auf Notizübersicht anzeigen
-- [ ] View Anzeige erweitern für Audio
+- [ ] Audio löschen
 
 
 ## DONE
@@ -32,3 +31,7 @@ Projektteam: Amanda Ramirez Ramos, Achim Grether
 - [x] Notizübersicht Custom View umsetzen
 - [x] View für Notiz erstellen / anzeigen (Titel und Text)
 - [x] View Anzeige erweitern für Bild
+- [x] Audiomodul einbinden
+- [x] Audio aufnehmen
+- [x] Audio auf Notizübersicht anzeigen
+- [x] View Anzeige erweitern für Audio
