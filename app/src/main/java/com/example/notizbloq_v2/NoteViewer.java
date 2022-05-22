@@ -11,15 +11,18 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.InputDevice;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -33,6 +36,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -42,12 +46,15 @@ public class NoteViewer extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     public static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
     EditText noteTitle, noteText; // Views in diesem Layout
+    SeekBar seekBar;
+    Handler handler = new Handler();
     String noteFileName;
     Note loadedNote; // mitgegebene Note
     String currentPhotoPath; // Pfad inkl. Dateinamen für das aktuelle Foto.
     private MediaRecorder mRecorder;
     private MediaPlayer mPlayer;
     String currentRecordingPath;
+    HashSet<String> noteTags;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +148,10 @@ public class NoteViewer extends AppCompatActivity {
                 playAudio();
             }
         });
+
+        // Seekbar
+        seekBar = findViewById(R.id.seekBar);
+
     }
 
     private void dispatchTakePictureIntent() {
@@ -299,6 +310,15 @@ public class NoteViewer extends AppCompatActivity {
             mPlayer.prepare();
             //below method will start our media player.
             mPlayer.start();
+            seekBar.setMax(mPlayer.getDuration());
+            UpdateSeekBar updateSeekBar = new UpdateSeekBar();
+            handler.post(updateSeekBar);
+            mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    mp.release();
+                }
+            });
         } catch (IOException e) {
             Log.e("TAG", "prepare() failed");
         }
@@ -342,12 +362,29 @@ public class NoteViewer extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.menu_noteviewer, menu);
+        getMenuInflater().inflate(R.menu.menu_noteviewer, menu);
         return true;
     }
 
+     @Override
+     public boolean onOptionsItemSelected(MenuItem item) {
+     switch(item.getItemId()) {
+         case R.id.menu_deleteNote:
+             //your action
+             break;
+         case R.id.menu_deleteImage:
+            //your action
+            break;
+        default:
+            return super.onOptionsItemSelected(item);
+     }
+     return true;
+     }
+
     public void buttonSave(View v) {
         Note note;
+        // Tags parsen
+        noteTags = Utilities.parseTagsFromText(noteText.getText().toString());
 
         if (loadedNote == null) { // Wenn eine neue Notiz gespeichert wird
             note = new Note(System.currentTimeMillis()
@@ -355,14 +392,16 @@ public class NoteViewer extends AppCompatActivity {
                     , noteTitle.getText().toString()
                     , noteText.getText().toString()
                     , currentPhotoPath
-                    , currentRecordingPath);
+                    , currentRecordingPath
+                    , noteTags);
         } else { // Wenn eine vorhandene Notiz gespeichert wird, wird die Notiz mit gleichen Namen abgespeichert aber neuen Attributen
             note = new Note(loadedNote.getCreatedDtTm()
                     , System.currentTimeMillis()
                     , noteTitle.getText().toString()
                     , noteText.getText().toString()
                     , currentPhotoPath
-                    , currentRecordingPath);
+                    , currentRecordingPath
+                    , noteTags);
         }
         if (Utilities.saveNote(this, note)) {
             Toast.makeText(this, "Note saved", Toast.LENGTH_SHORT).show();
@@ -390,6 +429,15 @@ public class NoteViewer extends AppCompatActivity {
                     .setNegativeButton("no", null)
                     .setCancelable(false);
             dialog.show();
+        }
+    }
+
+    public class UpdateSeekBar implements Runnable {
+
+        @Override
+        public void run() {
+            seekBar.setProgress(mPlayer.getCurrentPosition());
+            handler.postDelayed(this, 100);
         }
     }
 }

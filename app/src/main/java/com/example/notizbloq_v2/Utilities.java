@@ -12,11 +12,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 // https://www.youtube.com/watch?v=ysEeCph0GPA
 
 public class Utilities {
     public static final String FILE_EXTENSION = ".blq";
+    public static final String TAGS_REGEX = "#([a-zA-Z0-9]*)";
 
     // Speichern einer Note
     public static boolean saveNote(Context context, Note note) {
@@ -113,6 +117,19 @@ public class Utilities {
         }
         return note;
     }
+
+    // Alle Tags aus einer Notiz parsen
+    public static HashSet<String> parseTagsFromText(String text) {
+        HashSet<String> tagSet = new HashSet<>();
+        Pattern p = Pattern.compile(TAGS_REGEX);
+        Matcher m = p.matcher(text);
+        while (m.find()) {
+            tagSet.add(m.group(1));
+        }
+        return tagSet;
+    }
+
+    // Alle Tags aus allen Notizen parsen
 
     // Eine Notiz löschen
     public static void deleteNote(Context context, String fileName) {
