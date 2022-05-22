@@ -15,6 +15,7 @@ Projektteam: Amanda Ramirez Ramos, Achim Grether
 - [ ] Menu beim Bearbeiten einer Notiz (optional)
 - [ ] Fragment zur Notizbearbeitung (optional)
 - [ ] UI-Update: Anzeige der Bild- und Audioaufnahme umgestalten (optional)
+- [ ] UI-Update: Besseres Icon für die App erstellen (optional)
 
 
 ## DOING
