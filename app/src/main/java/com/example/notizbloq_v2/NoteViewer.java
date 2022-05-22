@@ -1,29 +1,36 @@
 package com.example.notizbloq_v2;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.FileNotFoundException;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+
+import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class NoteViewer extends AppCompatActivity {
 
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     EditText noteTitle, noteText; // Views in diesem Layout
     String noteFileName;
     Note loadedNote; // mitgegebene Note
+    String currentPhotoPath; // Pfad inkl. Dateinamen für das aktuelle Foto.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +46,114 @@ public class NoteViewer extends AppCompatActivity {
         noteFileName = intent.getStringExtra("NOTE_FILE");
 
         // Wenn eine Note mitgegeben wurde, die entsprechende Notiz aus dem Speicher holen und laden
-        if (noteFileName != null && !noteFileName.isEmpty() ) {
+        if (noteFileName != null && !noteFileName.isEmpty()) {
             loadedNote = Utilities.getNoteByName(this, noteFileName);
 
-            if(loadedNote != null) {
+            if (loadedNote != null) {
                 noteTitle.setText(loadedNote.getNoteTitle());
                 noteText.setText(loadedNote.getNoteText());
+                currentPhotoPath = loadedNote.getImageUrl();
+
+                // if the note contains a picture, update the layout and show the image.
+                if (loadedNote.getImageUrl() != null) {
+                    updateImageView(loadedNote.getImageUrl());
+                }
             }
         }
 
+        // Add onclicklistener for the take photo button.
+        Button takePhotoBtn = (Button) findViewById(R.id.btnTakePhoto);
+        takePhotoBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Start take picture intent.
+                dispatchTakePictureIntent();
+            }
+        });
+
+        // Add onclicklistener for the deletion of a photo.
+        Button deletePhotoBtn = (Button) findViewById(R.id.btnDeleteImage);
+        deletePhotoBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Reset the Url and update the view.
+                currentPhotoPath = null;
+                updateImageView(null);
+            }
+        });
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent.
+        if (getApplicationContext().getPackageManager().hasSystemFeature(
+                PackageManager.FEATURE_CAMERA)) {
+            // Create the File where the photo should go.
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File.
+
+            }
+            // Continue only if the File was successfully created.
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.android.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            try {
+                updateImageView(currentPhotoPath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * [updateImageView]
+     * Update the ImageView on Screen with the picture linked in the note and enables the button
+     * to delete the picture again.
+     *
+     * @param imageUrl: String, the Url to the image includes  filename and ending.
+     */
+    private void updateImageView(String imageUrl) {
+        ImageView imagePreview = (ImageView) findViewById(R.id.imageViewPictureThumbnail);
+        Button deleteImageButton = (Button) findViewById(R.id.btnDeleteImage);
+        if (imageUrl != null) {
+            try {
+                imagePreview.setImageBitmap(BitmapFactory.decodeFile(imageUrl));
+                deleteImageButton.setEnabled(true);
+            } catch (RuntimeException ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            imagePreview.setImageResource(0);
+            deleteImageButton.setEnabled(false);
+        }
+    }
+
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",   /* suffix */
+                storageDir      /* directory */
+        );
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 
     @Override
@@ -60,16 +166,15 @@ public class NoteViewer extends AppCompatActivity {
         Note note;
 
         if (loadedNote == null) { // Wenn eine neue Notiz gespeichert wird
-            note = new Note(System.currentTimeMillis(), System.currentTimeMillis(), noteTitle.getText().toString(), noteText.getText().toString());
+            note = new Note(System.currentTimeMillis(), System.currentTimeMillis(), noteTitle.getText().toString(), noteText.getText().toString(), currentPhotoPath);
         } else { // Wenn eine vorhandene Notiz gespeichert wird, wird die Notiz mit gleichen Namen abgespeichert aber neuen Attributen
-            note = new Note(loadedNote.getCreatedDtTm(), System.currentTimeMillis(), noteTitle.getText().toString(), noteText.getText().toString());
+            note = new Note(loadedNote.getCreatedDtTm(), System.currentTimeMillis(), noteTitle.getText().toString(), noteText.getText().toString(), currentPhotoPath);
         }
         if (Utilities.saveNote(this, note)) {
             Toast.makeText(this, "Note saved", Toast.LENGTH_SHORT).show();
             //HomeScreen.noteViewAdapter.notifyDataSetChanged();
             finish(); // beendet die Activity und kehrt zum HomeScreen zurück
         }
-
     }
 
     public void deleteNote(View view) {

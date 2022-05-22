@@ -4,20 +4,27 @@ import android.content.Context;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 
 public class Note implements Serializable {
     private long createdDtTm, modifiedDtTm;
-    private String noteTitle, noteText;
-    private int imageId = R.drawable.ic_launcher_background; // TODO: Change
+    private String noteTitle, noteText, imageUrl;
+    private Integer thumbnailImageId = null;
 
     public Note(long createdDtTm, long modifiedDtTm, String title, String text) {
         this.createdDtTm = createdDtTm;
         this.modifiedDtTm = modifiedDtTm;
         this.noteTitle = title;
         this.noteText = text;
+    }
+
+    public Note(long createdDtTm, long modifiedDtTm, String title, String text, String image) {
+        this.createdDtTm = createdDtTm;
+        this.modifiedDtTm = modifiedDtTm;
+        this.noteTitle = title;
+        this.noteText = text;
+        this.imageUrl = image;
     }
 
     public void setNoteTitle(String newTitle) {
@@ -28,31 +35,25 @@ public class Note implements Serializable {
         this.noteText = newText;
     }
 
-    public void setImageId(int newImageId) {
-        this.imageId = newImageId;
+    public void setThumbnailImageId(int newImageId) {
+        this.thumbnailImageId = newImageId;
     }
 
     public void setModifiedDtTm(long modifiedDtTm) { this.modifiedDtTm = modifiedDtTm; }
 
-    public String getNoteText() {
-        return this.noteText;
-    }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
-    public String getNoteTitle() {
-        return this.noteTitle;
-    }
+    public String getNoteText() { return this.noteText; }
 
-    public int getImageId() {
-        return imageId;
-    }
+    public String getNoteTitle() { return this.noteTitle; }
 
-    public long getCreatedDtTm() {
-        return createdDtTm;
-    }
+    public Integer getThumbnailImageId() { return thumbnailImageId; }
 
-    public String getFileName() {
-        return createdDtTm + Utilities.FILE_EXTENSION;
-    }
+    public long getCreatedDtTm() { return createdDtTm; }
+
+    public String getFileName() { return createdDtTm + Utilities.FILE_EXTENSION; }
+
+    public String getImageUrl() { return imageUrl; }
 
     // Zum Formatieren der Zeitstempel
     public static String getDtTmFormatted(Context context, long dttm) {
@@ -60,4 +61,6 @@ public class Note implements Serializable {
         sdf.setTimeZone(TimeZone.getDefault());
         return sdf.format(new Date(dttm));
     }
+
+
 }
