@@ -3,10 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:title="@string/deleteNote"
-        android:id="@+id/delete_note"
+        android:id="@+id/menu_deleteNote"
         android:icon="@android:drawable/ic_dialog_dialer"
         android:orderInCategory="0"
         app:showAsAction="always"
     />
+
+    <item
+        android:title="@string/deleteImage"
+        android:id="@+id/menu_deleteImage"
+        android:icon="@android:drawable/ic_dialog_dialer"
+        android:orderInCategory="0"
+        app:showAsAction="always"
+        />
 
 </menu>

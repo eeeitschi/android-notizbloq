@@ -147,8 +147,8 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:onClick="deleteNote"
-        android:text="@string/delete"
+        android:text="@string/deleteNote"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
