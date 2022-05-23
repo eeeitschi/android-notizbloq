@@ -20,7 +20,7 @@ Projektteam: Amanda Ramirez Ramos, Achim Grether
 
 
 ## DOING
-- [ ] Audio löschen
+- [ ] Audioaufnahme löschen
 
 
 ## DONE
