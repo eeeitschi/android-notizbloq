@@ -6,7 +6,6 @@ Projektteam: Amanda Ramirez Ramos, Achim Grether
 
 
 ## TODO
-- [ ] Tags parsen
 - [ ] Layout mit Suchfeld ergänzen
 - [ ] Filter nach Tags umsetzen
 - [ ] Share Funktion für Notizen
@@ -16,6 +15,8 @@ Projektteam: Amanda Ramirez Ramos, Achim Grether
 - [ ] Fragment zur Notizbearbeitung (optional)
 - [ ] UI-Update: Anzeige der Bild- und Audioaufnahme umgestalten (optional)
 - [ ] UI-Update: Besseres Icon für die App erstellen (optional)
+- [ ] Bug: Layout begrenzung
+- [ ] Bug: Audio Playback exeption
 
 
 ## DOING
@@ -23,6 +24,7 @@ Projektteam: Amanda Ramirez Ramos, Achim Grether
 
 
 ## DONE
+- [x] Tags parsen
 - [x] Speichern von Notizen
 - [x] Löschen von Notizen
 - [x] Kameramodul einbinden
