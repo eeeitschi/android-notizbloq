@@ -381,6 +381,11 @@ public class NoteViewer extends AppCompatActivity {
      return true;
      }
 
+    /**
+     * [buttonSave]
+     * Abspeichern der Notiz. Ist die Notiz bereits angelegt, wird die bestehende Datei ersetzt.
+     * @param v: View, der Save-Button benötigt für die Referienzierung die View.
+     */
     public void buttonSave(View v) {
         Note note;
         // Tags parsen
