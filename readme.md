@@ -9,21 +9,20 @@ Projektteam: Amanda Ramirez Ramos, Achim Grether
 - [ ] Layout mit Suchfeld ergänzen
 - [ ] Filter nach Tags umsetzen
 - [ ] Share Funktion für Notizen
+- [ ] Bug: Audio Playback exeption
+
 - [ ] Settings Page umsetzen (optional)
 - [ ] Info Page zur Notiz umsetzen (optional)
 - [ ] Menu beim Bearbeiten einer Notiz (optional)
 - [ ] Fragment zur Notizbearbeitung (optional)
 - [ ] UI-Update: Anzeige der Bild- und Audioaufnahme umgestalten (optional)
 - [ ] UI-Update: Besseres Icon für die App erstellen (optional)
-- [ ] Bug: Layout begrenzung
-- [ ] Bug: Audio Playback exeption
-
 
 ## DOING
 - [ ] Audioaufnahme löschen
 
-
 ## DONE
+- [x] Bug: Layout begrenzung
 - [x] Tags parsen
 - [x] Speichern von Notizen
 - [x] Löschen von Notizen
