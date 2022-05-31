@@ -55,7 +55,6 @@ public class NoteViewAdapter extends ArrayAdapter<Note> {
             audioIcon.setImageDrawable(audio);
         }
 
-
         // then according to the position of the view assign the note title for the same
         TextView noteTitle = currentItemView.findViewById(R.id.item_noteTitle);
         noteTitle.setText(currentNotePosition.getNoteTitle());
@@ -63,6 +62,12 @@ public class NoteViewAdapter extends ArrayAdapter<Note> {
         // then according to the position of the view assign the note text for the same
         TextView noteText = currentItemView.findViewById(R.id.item_noteText);
         noteText.setText(currentNotePosition.getNoteText());
+
+        // Assign Tags
+        TextView noteTags = currentItemView.findViewById(R.id.item_noteTags);
+        String noteTagsString = currentNotePosition.getNoteTagsAsString();
+        System.out.println(noteTagsString);
+        noteTags.setText(noteTagsString);
 
         // then return the recyclable view
         return currentItemView;

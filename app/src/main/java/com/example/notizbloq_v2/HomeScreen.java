@@ -71,7 +71,6 @@ public class HomeScreen extends AppCompatActivity {
             noteViewAdapter = new NoteViewAdapter(this, notes);
             noteListView.setAdapter(noteViewAdapter);
         }
-
     }
 
     public void addNote(View view) {
