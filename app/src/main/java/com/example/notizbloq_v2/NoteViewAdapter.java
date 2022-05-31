@@ -55,7 +55,6 @@ public class NoteViewAdapter extends ArrayAdapter<Note> {
             audioIcon.setImageDrawable(audio);
         }
 
-
         // then according to the position of the view assign the note title for the same
         TextView noteTitle = currentItemView.findViewById(R.id.item_noteTitle);
         noteTitle.setText(currentNotePosition.getNoteTitle());

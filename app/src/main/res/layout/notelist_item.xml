@@ -45,7 +45,7 @@
         <TextView
             android:id="@+id/item_noteText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="32dp"
             android:gravity="left"
             android:textColor="@android:color/black"
             android:textSize="14sp"
