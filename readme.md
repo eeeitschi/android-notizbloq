@@ -36,3 +36,4 @@ Projektteam: Amanda Ramirez Ramos, Achim Grether
 - [x] Audio aufnehmen
 - [x] Audio auf Notizübersicht anzeigen
 - [x] View Anzeige erweitern für Audio
+- [x] Instrumented Test für Notiz erstellen und Löschen
