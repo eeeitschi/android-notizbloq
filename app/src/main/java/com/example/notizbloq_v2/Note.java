@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.TimeZone;
 
+@SuppressWarnings("ALL")
 public class Note implements Serializable {
     // Bei Änderungen der Klasse muss die serialVersionUID übereinstimmen, damit die Serialisierung funktioniert.
     private long createdDtTm, modifiedDtTm;

@@ -3,7 +3,6 @@ package com.example.notizbloq_v2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -39,16 +38,14 @@ public class HomeScreen extends AppCompatActivity {
         }
 
         // Listener für einen ClickEvent zur Liste hinzufügen
-        noteListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Den Filenamen der angeglickten Note speichern
-                String fileName = ((Note) noteListView.getItemAtPosition(position)).getFileName();
-                // NoteViewer Activity öffnen
-                Intent viewNoteIntent = new Intent(getApplicationContext(), NoteViewer.class);
-                // Die angeklickte Note mitgeben
-                viewNoteIntent.putExtra("NOTE_FILE", fileName);
-                startActivity(viewNoteIntent);
-            }
+        noteListView.setOnItemClickListener((parent, view, position, id) -> {
+            // Den Filenamen der angeglickten Note speichern
+            String fileName = ((Note) noteListView.getItemAtPosition(position)).getFileName();
+            // NoteViewer Activity öffnen
+            Intent viewNoteIntent = new Intent(getApplicationContext(), NoteViewer.class);
+            // Die angeklickte Note mitgeben
+            viewNoteIntent.putExtra("NOTE_FILE", fileName);
+            startActivity(viewNoteIntent);
         });
     }
 
@@ -65,6 +62,7 @@ public class HomeScreen extends AppCompatActivity {
         }
     }
 
+    @SuppressWarnings("unused")
     public void addNote(View view) {
         // Neue Notiz hinzufügen (bei Klick auf Button)
         Intent newNote = new Intent(this, NoteViewer.class);

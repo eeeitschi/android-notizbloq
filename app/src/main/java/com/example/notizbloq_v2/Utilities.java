@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("ConstantConditions")
 public class Utilities {
     public static final String FILE_EXTENSION = ".blq";
     public static final String TAGS_REGEX = "#([a-zA-Z0-9]*)";
@@ -125,6 +126,7 @@ public class Utilities {
     }
 
     // Eine Notiz löschen
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void deleteNote(Context context, String fileName) {
         File dir = context.getFilesDir(); // gibt das aktuelle Verzeichnes der App zrück
         File file = new File(dir, fileName);

@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 import java.util.HashSet;
 
 public class Test_Utilities {
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Test
     public void tagsParsedCorrectly1() {
         String testString = "aijf aoijf ai #hallo jafi jifo jeijf aiwof jasefopa #ich. aef jio awe ehsiss .#hallo faijaweof .\n" +

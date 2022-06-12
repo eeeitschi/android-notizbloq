@@ -127,7 +127,7 @@ class CountHelper {
     public static int getCountFromListUsingTypeSafeMatcher(@IdRes int listViewId) {
         count = 0;
 
-        Matcher matcher = new TypeSafeMatcher<View>() {
+        Matcher<View> matcher = new TypeSafeMatcher<View>() {
             @Override
             protected boolean matchesSafely(View item) {
                 count = ((ListView) item).getCount();
