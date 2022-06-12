@@ -18,9 +18,10 @@ Projektteam: Amanda Ramirez Ramos, Achim Grether
 - [ ] UI-Update: Besseres Icon für die App erstellen (optional)
 
 ## DOING
-- [x] Bug: Audio Playback exeption
+
 
 ## DONE
+- [x] Bug: Audio Playback exeption
 - [x] Audioaufnahme löschen
 - [x] Bug: Layout begrenzung
 - [x] Tags parsen
