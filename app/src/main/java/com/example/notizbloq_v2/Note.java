@@ -2,12 +2,9 @@ package com.example.notizbloq_v2;
 
 import android.content.Context;
 import android.os.Build;
-
 import androidx.annotation.RequiresApi;
-
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.TimeZone;
@@ -85,6 +82,4 @@ public class Note implements Serializable {
         sdf.setTimeZone(TimeZone.getDefault());
         return sdf.format(new Date(dttm));
     }
-
-
 }
