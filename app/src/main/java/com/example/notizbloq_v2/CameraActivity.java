@@ -25,8 +25,6 @@ public class CameraActivity extends AppCompatActivity {
 
     private PreviewView previewView;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
-    private TextView textView;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -56,13 +56,8 @@ public class Note implements Serializable {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String getNoteTagsAsString() {
-        String tagsString = "";
+        String tagsString;
         tagsString = String.join(", ", noteTags);
-        /**
-        for (String s:noteTags) {
-            tagsString += "#"s;
-        }
-         **/
         return tagsString;
     }
 

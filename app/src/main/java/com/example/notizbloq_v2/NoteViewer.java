@@ -37,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 
+@SuppressWarnings("ALL")
 public class NoteViewer extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;

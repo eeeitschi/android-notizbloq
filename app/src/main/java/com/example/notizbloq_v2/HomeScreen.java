@@ -1,20 +1,14 @@
 package com.example.notizbloq_v2;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.sql.Array;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 
 public class HomeScreen extends AppCompatActivity {
@@ -34,7 +28,7 @@ public class HomeScreen extends AppCompatActivity {
         ArrayList<Note> notes = Utilities.getAllSavedNotes(this);
 
         // Wenn keine Notizen, Toast zeigen, sonst Listview mit dem Adapter füllen
-        if(notes == null || notes.size() == 0) {
+        if (notes == null || notes.size() == 0) {
             Toast.makeText(this, "You have no notes yet.", Toast.LENGTH_SHORT).show();
             return;
         } else {
@@ -46,8 +40,7 @@ public class HomeScreen extends AppCompatActivity {
 
         // Listener für einen ClickEvent zur Liste hinzufügen
         noteListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Den Filenamen der angeglickten Note speichern
                 String fileName = ((Note) noteListView.getItemAtPosition(position)).getFileName();
                 // NoteViewer Activity öffnen
@@ -64,9 +57,8 @@ public class HomeScreen extends AppCompatActivity {
         // ListView aktualisieren
         super.onResume();
         ArrayList<Note> notes = Utilities.getAllSavedNotes(this);
-        if(notes == null || notes.size() == 0) {
+        if (notes == null || notes.size() == 0) {
             Toast.makeText(this, "You have no notes yet.", Toast.LENGTH_SHORT).show();
-            return;
         } else {
             noteViewAdapter = new NoteViewAdapter(this, notes);
             noteListView.setAdapter(noteViewAdapter);
