@@ -2,22 +2,18 @@ package com.example.notizbloq_v2;
 
 import android.content.Context;
 import android.util.Log;
-
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// https://www.youtube.com/watch?v=ysEeCph0GPA
-
+@SuppressWarnings("ConstantConditions")
 public class Utilities {
     public static final String FILE_EXTENSION = ".blq";
     public static final String TAGS_REGEX = "#([a-zA-Z0-9]*)";
@@ -30,7 +26,7 @@ public class Utilities {
         ObjectOutputStream oos = null;
 
         try {
-            fos = context.openFileOutput(fileName, context.MODE_PRIVATE);
+            fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             Log.i("Saving", "Files Directory: " + context.getFilesDir().getAbsolutePath());
             oos = new ObjectOutputStream(fos);
             oos.writeObject(note);
@@ -66,14 +62,14 @@ public class Utilities {
         FileInputStream fis = null;
         ObjectInputStream ois = null;
 
-        for(int i = 0; i < noteFiles.size(); i++) {
+        for (int i = 0; i < noteFiles.size(); i++) {
             try {
                 fis = context.openFileInput(noteFiles.get(i));
                 ois = new ObjectInputStream(fis);
 
                 notes.add((Note) ois.readObject());
 
-            } catch (IOException | ClassNotFoundException e ) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
                 return null;
             } finally {
@@ -103,7 +99,7 @@ public class Utilities {
 
                 note = (Note) ois.readObject();
 
-            } catch (IOException | ClassNotFoundException e ) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
                 return null;
             } finally {
@@ -129,9 +125,8 @@ public class Utilities {
         return tagSet;
     }
 
-    // Alle Tags aus allen Notizen parsen
-
     // Eine Notiz löschen
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void deleteNote(Context context, String fileName) {
         File dir = context.getFilesDir(); // gibt das aktuelle Verzeichnes der App zrück
         File file = new File(dir, fileName);

@@ -2,16 +2,14 @@ package com.example.notizbloq_v2;
 
 import android.content.Context;
 import android.os.Build;
-
 import androidx.annotation.RequiresApi;
-
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.TimeZone;
 
+@SuppressWarnings("ALL")
 public class Note implements Serializable {
     // Bei Änderungen der Klasse muss die serialVersionUID übereinstimmen, damit die Serialisierung funktioniert.
     private long createdDtTm, modifiedDtTm;
@@ -59,13 +57,8 @@ public class Note implements Serializable {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String getNoteTagsAsString() {
-        String tagsString = "";
+        String tagsString;
         tagsString = String.join(", ", noteTags);
-        /**
-        for (String s:noteTags) {
-            tagsString += "#"s;
-        }
-         **/
         return tagsString;
     }
 
@@ -85,6 +78,4 @@ public class Note implements Serializable {
         sdf.setTimeZone(TimeZone.getDefault());
         return sdf.format(new Date(dttm));
     }
-
-
 }
