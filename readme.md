@@ -9,7 +9,6 @@ Projektteam: Amanda Ramirez Ramos, Achim Grether
 - [ ] Layout mit Suchfeld ergänzen
 - [ ] Filter nach Tags umsetzen
 - [ ] Share Funktion für Notizen
-- [ ] Bug: Audio Playback exeption
 
 - [ ] Settings Page umsetzen (optional)
 - [ ] Info Page zur Notiz umsetzen (optional)
@@ -19,9 +18,10 @@ Projektteam: Amanda Ramirez Ramos, Achim Grether
 - [ ] UI-Update: Besseres Icon für die App erstellen (optional)
 
 ## DOING
-- [ ] Audioaufnahme löschen
+- [x] Bug: Audio Playback exeption
 
 ## DONE
+- [x] Audioaufnahme löschen
 - [x] Bug: Layout begrenzung
 - [x] Tags parsen
 - [x] Speichern von Notizen

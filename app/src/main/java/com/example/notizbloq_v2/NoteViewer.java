@@ -2,6 +2,8 @@ package com.example.notizbloq_v2;
 
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,8 +19,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -26,12 +26,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Toast;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -42,15 +44,13 @@ public class NoteViewer extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     public static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
+    private MediaRecorder mRecorder;
+    private MediaPlayer mPlayer;
     EditText noteTitle, noteText; // Views in diesem Layout
     SeekBar seekBar;
     Handler handler = new Handler();
-    String noteFileName;
+    String noteFileName, currentPhotoPath, currentRecordingPath;
     Note loadedNote; // mitgegebene Note
-    String currentPhotoPath; // Pfad inkl. Dateinamen für das aktuelle Foto.
-    private MediaRecorder mRecorder;
-    private MediaPlayer mPlayer;
-    String currentRecordingPath;
     HashSet<String> noteTags;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -81,11 +81,10 @@ public class NoteViewer extends AppCompatActivity {
                 if (loadedNote.getImageUrl() != null) {
                     updateImageView(loadedNote.getImageUrl());
                 }
-
                 // Initialisiert die Audio Buttons
                 if (loadedNote.getAudioUrl() != null) {
-                    Button playAudioButton = findViewById(R.id.btnPlayRecording);
-                    playAudioButton.setEnabled(true);
+                    findViewById(R.id.btnPlayRecording).setEnabled(true);
+                    findViewById(R.id.btnDeleteRecording).setEnabled(true);
                 }
             }
         }
@@ -94,8 +93,7 @@ public class NoteViewer extends AppCompatActivity {
         Button takePhotoBtn = (Button) findViewById(R.id.btnTakePhoto);
         takePhotoBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Start take picture intent.
-                dispatchTakePictureIntent();
+                dispatchTakePictureIntent(); // Start take picture intent.
             }
         });
 
@@ -103,16 +101,13 @@ public class NoteViewer extends AppCompatActivity {
         Button deletePhotoBtn = (Button) findViewById(R.id.btnDeleteImage);
         deletePhotoBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Reset the Url and update the view.
-                currentPhotoPath = null;
+                currentPhotoPath = null; // Reset the Url and update the view.
                 updateImageView(null);
             }
         });
 
         // Add onTouchListener for starting a recording.
         Button audioRecording = (Button) findViewById(R.id.btnAudioRecording);
-
-        // Add onTouchListener for recording Audios
         audioRecording.setOnTouchListener(new View.OnTouchListener() {
             @RequiresApi(api = Build.VERSION_CODES.S)
             public boolean onTouch(View v, MotionEvent event) {
@@ -131,8 +126,8 @@ public class NoteViewer extends AppCompatActivity {
                         audioRecording.setBackgroundColor(getResources().getColor(R.color.primary));
                         stopRecording();
                         // Enable Play Button
-                        Button playAudioButton = findViewById(R.id.btnPlayRecording);
-                        playAudioButton.setEnabled(true);
+                        findViewById(R.id.btnPlayRecording).setEnabled(true);
+                        findViewById(R.id.btnDeleteRecording).setEnabled(true);
                         break;
                 }
                 return true;
@@ -146,10 +141,15 @@ public class NoteViewer extends AppCompatActivity {
                 playAudio();
             }
         });
-
-        // Seekbar
         seekBar = findViewById(R.id.seekBar);
 
+        // Delete Recording
+        Button deleteRecording = (Button) findViewById(R.id.btnDeleteRecording);
+        deleteRecording.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                deleteAudio();
+            }
+        });
     }
 
     private void dispatchTakePictureIntent() {
@@ -162,14 +162,12 @@ public class NoteViewer extends AppCompatActivity {
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                // Error occurred while creating the File.
-
+                Log.e(TAG, ex.getMessage().toString());
             }
             // Continue only if the File was successfully created.
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.android.fileprovider",
-                        photoFile);
+                        "com.example.android.fileprovider", photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
@@ -191,6 +189,7 @@ public class NoteViewer extends AppCompatActivity {
     /**
      * Update the ImageView on Screen with the picture linked in the note and enables the button
      * to delete the picture again.
+     *
      * @param imageUrl: String, the Url to the image includes  filename and ending.
      */
     private void updateImageView(String imageUrl) {
@@ -215,11 +214,7 @@ public class NoteViewer extends AppCompatActivity {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",   /* suffix */
-                storageDir      /* directory */
-        );
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
         return image;
@@ -231,11 +226,7 @@ public class NoteViewer extends AppCompatActivity {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String audioFileName = "Recording_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_MUSIC);
-        File audioFile = File.createTempFile(
-                audioFileName,  /* prefix */
-                ".3gp",   /* suffix */
-                storageDir      /* directory */
-        );
+        File audioFile = File.createTempFile(audioFileName, ".3gp", storageDir);
         // Save a file: path for use with ACTION_VIEW intents
         currentRecordingPath = audioFile.getAbsolutePath();
         return audioFile;
@@ -248,16 +239,12 @@ public class NoteViewer extends AppCompatActivity {
             Log.i("Recording", "New Recording file: " + audioFile.getAbsolutePath());
             // below method is used to initialize the media recorder class
             mRecorder = new MediaRecorder();
-
             // below method is used to set the audio source which we are using a mic.
             mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-
             // below method is used to set the output format of the audio.
             mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-
             // below method is used to set the audio encoder for our recorded audio.
             mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
             // below method is used to set the output file location for our recorded audio
             mRecorder.setOutputFile(audioFile.getAbsolutePath());
             try {
@@ -265,7 +252,6 @@ public class NoteViewer extends AppCompatActivity {
                 mRecorder.prepare();
             } catch (IOException e) {
                 Log.e("TAG", "prepare() failed");
-                System.out.println("" + e);    //to display the error
             }
             // start method will start the audio recording.
             mRecorder.start();
@@ -302,31 +288,30 @@ public class NoteViewer extends AppCompatActivity {
                 }
             });
         } catch (IOException e) {
-            Log.e("TAG", "prepare() failed");
+            Log.e(TAG, "prepare() failed");
         }
     }
 
-    public void pausePlaying() {
-        //this method will release the media player class and pause the playing of our recorded audio.
-        mPlayer.release();
-        mPlayer = null;
+    private void deleteAudio() {
+        currentRecordingPath = "";
+        mPlayer.stop();
+        findViewById(R.id.btnDeleteRecording).setEnabled(false);
+        findViewById(R.id.btnPlayRecording).setEnabled(false);
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         // this method is called when user will grant the permission for audio recording.
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_AUDIO_PERMISSION_CODE:
-                if (grantResults.length > 0) {
-                    boolean permissionToRecord = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    boolean permissionToStore = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                    if (permissionToRecord && permissionToStore) {
-                        Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_LONG).show();
-                    }
+        if (requestCode == REQUEST_AUDIO_PERMISSION_CODE) {
+            if (grantResults.length > 0) {
+                boolean permissionToRecord = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                boolean permissionToStore = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                if (permissionToRecord && permissionToStore) {
+                    Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_LONG).show();
                 }
-                break;
+            }
         }
     }
 
@@ -342,24 +327,6 @@ public class NoteViewer extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{RECORD_AUDIO, WRITE_EXTERNAL_STORAGE}, REQUEST_AUDIO_PERMISSION_CODE);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_noteviewer, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_deleteNote:
-            case R.id.menu_deleteImage:
-                //your action
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-        return true;
-    }
 
     /**
      * Abspeichern der Notiz. Ist die Notiz bereits angelegt, wird die bestehende Datei ersetzt.
@@ -417,8 +384,12 @@ public class NoteViewer extends AppCompatActivity {
     public class UpdateSeekBar implements Runnable {
         @Override
         public void run() {
-            seekBar.setProgress(mPlayer.getCurrentPosition());
-            handler.postDelayed(this, 100);
+            try {
+                seekBar.setProgress(mPlayer.getCurrentPosition());
+                handler.postDelayed(this, 100);
+            } catch (Exception ex) {
+                Log.e(TAG, ex.getMessage().toString());
+            }
         }
     }
 }

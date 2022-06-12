@@ -35,55 +35,50 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/noteTitle" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/layout_AudioControls"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        app:layout_constraintBottom_toTopOf="@id/linlayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/noteText">
 
         <SeekBar
             android:id="@+id/seekBar"
-            android:layout_width="0dp"
+            android:layout_width="250dp"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btnAudioRecording"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="parent" />
+            android:layout_marginEnd="8dp" />
 
         <Button
             android:id="@+id/btnAudioRecording"
-            android:layout_width="40dp"
+            android:layout_width="30dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
             app:icon="@drawable/ic_audio"
-            app:iconGravity="start"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/btnPlayRecording"
-            app:layout_constraintStart_toEndOf="@id/seekBar"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:iconGravity="start" />
 
         <Button
             android:id="@+id/btnPlayRecording"
-            android:layout_width="40dp"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:enabled="false"
+            app:icon="@android:drawable/ic_media_play"
+            app:iconGravity="textEnd" />
+
+        <Button
+            android:id="@+id/btnDeleteRecording"
+            android:layout_width="30dp"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:enabled="false"
-            app:icon="@android:drawable/ic_media_play"
-            app:iconGravity="textEnd"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btnAudioRecording"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:icon="@android:drawable/ic_delete"
+            app:iconGravity="textEnd" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linlayout"

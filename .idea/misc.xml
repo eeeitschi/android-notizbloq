@@ -3,13 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-anydpi/ic_audio.xml" value="0.216" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.299" />
         <entry key="app/src/main/res/drawable/ic_baseline_edit_note_24.xml" value="0.299" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.299" />
         <entry key="app/src/main/res/drawable/ic_note_default_thumbnail.xml" value="0.299" />
         <entry key="app/src/main/res/layout/activity_camera.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.28033447265625" />
-        <entry key="app/src/main/res/layout/activity_note_viewer.xml" value="0.24708190917968753" />
+        <entry key="app/src/main/res/layout/activity_note_viewer.xml" value="0.4127969360351563" />
         <entry key="app/src/main/res/layout/activity_note_viewer_v2.xml" value="0.23324275362318841" />
         <entry key="app/src/main/res/layout/notelist_item.xml" value="0.24527130126953126" />
         <entry key="app/src/main/res/menu/menu_noteviewer.xml" value="0.28229166666666666" />
