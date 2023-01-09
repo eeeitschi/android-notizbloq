@@ -9,15 +9,12 @@ Projektteam: Amanda Ramirez Ramos, Achim Grether
 - [ ] Layout mit Suchfeld ergänzen
 - [ ] Filter nach Tags umsetzen
 - [ ] Share Funktion für Notizen
-
-- [ ] Settings Page umsetzen (optional)
-- [ ] Info Page zur Notiz umsetzen (optional)
-- [ ] Menu beim Bearbeiten einer Notiz (optional)
-- [ ] Fragment zur Notizbearbeitung (optional)
-- [ ] UI-Update: Anzeige der Bild- und Audioaufnahme umgestalten (optional)
-- [ ] UI-Update: Besseres Icon für die App erstellen (optional)
-
-## DOING
+- [ ] Settings Page umsetzen
+- [ ] Info Page zur Notiz umsetzen
+- [ ] Menu beim Bearbeiten einer Notiz
+- [ ] Fragment zur Notizbearbeitung
+- [ ] UI-Update: Anzeige der Bild- und Audioaufnahme umgestalten
+- [ ] UI-Update: Besseres Icon für die App erstellen
 
 
 ## DONE
